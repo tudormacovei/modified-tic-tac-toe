@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
 public class OnBaseTileClick : MonoBehaviour
@@ -18,13 +17,23 @@ public class OnBaseTileClick : MonoBehaviour
 		
 	}
 
-    //How to detect which tile we clicked?
+    //Use this function to get the integer part of our object name
+    //TODO: Convert array names to a 0-index
+    int getTile()
+    {
+        string suffix = string.Empty;
+        int startIndex = gameObject.name.IndexOf('_');
+        suffix = gameObject.name.Substring(startIndex + 1);
+        Debug.Log(suffix);
+        return int.Parse(suffix);
+    }
+
+    //We detect the correct matrix position by using the name of the object
     void OnMouseDown ()
     {
         int tile = new int();
-        tile = this.gameObject.name[9] - '0';
+        tile = getTile();
+        Debug.Log(tile + "pressed");
         GameManager.Instance.GameBoardUpdate(Cross, Nought, tile);
     }
-    //Object.Instantiate(Cross, new Vector3(-2.2f, -2.2f, 0), transform.rotation, null);
-    //spawn sprites in the game manager, when you update the matrix
 }

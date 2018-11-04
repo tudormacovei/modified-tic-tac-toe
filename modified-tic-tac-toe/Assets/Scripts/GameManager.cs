@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     //"Singleton" implementation
-    //The GameManager Class is a singleton, which is good pracice, apparently
+    //The GameManager Class is a singleton, which is good pracice (apparently)
     //I don't understand how this works quite yet, but I'll get there
     //<BLACK MAGIC>
     private static GameManager _instance;
@@ -55,6 +53,8 @@ public class GameManager : MonoBehaviour
         y = tile / 3;
     }
 
+    //TODO: Place GameMatrix functions in a separate file, only results should be visible
+    //      in the GameManager
     //checks if (x, y) is the "center" of a win
     //returns what player won if it is a win
     private int WinInXY(int x, int y)
