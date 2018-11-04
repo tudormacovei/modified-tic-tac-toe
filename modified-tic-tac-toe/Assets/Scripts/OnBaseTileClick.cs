@@ -24,7 +24,6 @@ public class OnBaseTileClick : MonoBehaviour
         string suffix = string.Empty;
         int startIndex = gameObject.name.IndexOf('_');
         suffix = gameObject.name.Substring(startIndex + 1);
-        Debug.Log(suffix);
         return int.Parse(suffix);
     }
 
@@ -33,7 +32,6 @@ public class OnBaseTileClick : MonoBehaviour
     {
         int tile = new int();
         tile = getTile();
-        Debug.Log(tile + "pressed");
         GameManager.Instance.GameBoardUpdate(Cross, Nought, tile);
     }
 }
