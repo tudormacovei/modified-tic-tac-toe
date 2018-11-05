@@ -39,13 +39,19 @@ public class GameManager : MonoBehaviour
             for (int j = 0; j < boardSize; j++)
                 gameMatrix[i, j] = 0;
         player = 1;
+        UIManager.Instance.PlayerMovingUI();
     }
 
     // Update is called once per frame
-    void Update ()
+    void Update()
     {
 
-	}
+    }
+
+    public int PlayerMoving()
+    {
+        return player;
+    }
 
     private void TileToXY(int tile, ref int x, ref int y)
     {
@@ -131,16 +137,19 @@ public class GameManager : MonoBehaviour
                 gameMatrix[x, y] = 1;
                 Object.Instantiate(cross, new Vector3(2 * (x - 2), -2 * (y - 2), 0), transform.rotation, null);
                 player = 2;
+                UIManager.Instance.PlayerMovingUI();
             }
             else
             {
                 gameMatrix[x, y] = 2;
                 Object.Instantiate(nought, new Vector3(2 * (x - 2), -2 * (y - 2), 0), transform.rotation, null);
                 player = 1;
+                UIManager.Instance.PlayerMovingUI();
             }
         else
         {
             //UI action: invalid position
+            UIManager.Instance.PositionInvalid();
         }
         Debug.Log("GameState: " + GameState(x, y));
     }
