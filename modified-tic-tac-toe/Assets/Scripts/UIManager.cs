@@ -3,10 +3,9 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    //"Singleton" implementation
-    //The GameManager Class is a singleton, which is good pracice (apparently)
-    //I don't understand how this works quite yet, but I'll get there
-    //<BLACK MAGIC>
+    // "Singleton" implementation
+    // The GameManager Class is a singleton, which is good pracice (apparently)
+    // I don't understand how this works quite yet, but I'll get there
     private static UIManager _instance;
 
     public static UIManager Instance
@@ -23,11 +22,11 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    // not necessary in this implementation as we only have 1 level
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
     }
-    //</BLACK MAGIC>
 
     public Text TextPlayer, TextPosWarning;
     public Color ColorPlayer_1;
@@ -36,14 +35,20 @@ public class UIManager : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-		
-	}
+        PlayerMovingUI();
+    }
 	
 	// Update is called once per frame
 	void Update ()
     {
 	
 	}
+
+    // To prevent duplicates
+    public void MainMenu()
+    {
+        Object.Destroy(gameObject);
+    }
 
     public void PlayerMovingUI()
     {

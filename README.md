@@ -2,6 +2,6 @@
 
 
 ## TODO:
-#### 1. Start/End Menu
-#### 2. Invisibility and functionality of outer layer
-#### 3. New Sprites
+#### 1. Invisibility and functionality of outer layer
+#### 2. New Sprites
+#### 3. UI Scaling

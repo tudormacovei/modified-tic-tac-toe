@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    //"Singleton" implementation
-    //The GameManager Class is a singleton, which is good pracice (apparently)
-    //I don't understand how this works quite yet, but I'll get there
-    //<BLACK MAGIC>
+    // "Singleton" implementation
+    // The GameManager Class is a singleton, which is good pracice (apparently)
+    // I don't understand how this works quite yet, but I'll get there
     private static GameManager _instance;
 
     public static GameManager Instance
@@ -17,7 +17,6 @@ public class GameManager : MonoBehaviour
                 _instance = GameObject.FindObjectOfType<GameManager>();
                 Debug.Log("GameManager initialized");
             }
-
             return _instance;
         }
     }
@@ -26,7 +25,6 @@ public class GameManager : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
     }
-    //</BLACK MAGIC>
 
     private static int boardSize = 5;
     private int[,] gameMatrix = new int[boardSize, boardSize];
@@ -39,13 +37,27 @@ public class GameManager : MonoBehaviour
             for (int j = 0; j < boardSize; j++)
                 gameMatrix[i, j] = 0;
         player = 1;
-        UIManager.Instance.PlayerMovingUI();
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    // To prevent duplicates when replaying scenes
+    public void MainMenu()
+    {
+        SceneManager.LoadScene(0);
+        Object.Destroy(gameObject);
+    }
+
+    public void SwitchPlayer()
+    {
+        if (player == 1)
+            player = 2;
+        else
+            player = 1;
     }
 
     public int PlayerMoving()
@@ -60,8 +72,8 @@ public class GameManager : MonoBehaviour
         y = tile / boardSize;
     }
 
-    //checks if (x, y) is the "center" of a win
-    //returns what player won if it is a win
+    // Checks if (x, y) is the "center" of a win
+    // Returns what player won if it is a win
     private int WinInXY(int x, int y)
     {
         int ok = new int();
@@ -69,7 +81,7 @@ public class GameManager : MonoBehaviour
 
         if (ok == 0)
             return 0;
-        //Main diagonal
+        // Main diagonal
         for (int i = -1; i <= 1; i++)
             if (!(x + i >= 0 && x + i < boardSize && y + i >= 0 && y + i < boardSize))
                 ok = 0;
@@ -77,7 +89,7 @@ public class GameManager : MonoBehaviour
                 ok = 0;
         if (ok != 0)
             return ok;
-        //Secondary diagonal
+        // Secondary diagonal
         ok = gameMatrix[x, y];
         for (int i = -1; i <= 1; i++)
             if (!(x - i >= 0 && x - i < boardSize && y + i >= 0 && y + i < boardSize))
@@ -86,16 +98,16 @@ public class GameManager : MonoBehaviour
                 ok = 0;
         if (ok != 0)
             return ok;
-        //row Y
+        // Row Y
         ok = gameMatrix[x, y];
         for (int i = -1; i <= 1; i++)
-            if (!(x + i >= 0 && x + i <= 2 && y >= 0 && y < boardSize))
+            if (!(x + i >= 0 && x + i < boardSize && y >= 0 && y < boardSize))
                 ok = 0;
             else if (gameMatrix[x + i, y] != ok)
                 ok = 0;
         if (ok != 0)
             return ok;
-        //col X
+        // Column X
         ok = gameMatrix[x, y];
         for (int i = -1; i <= 1; i++)
             if (!(x >= 0 && x < boardSize && y + i >= 0 && y + i < boardSize))
@@ -107,8 +119,8 @@ public class GameManager : MonoBehaviour
         return 0;
     }
 
-    //returns 0 as the default
-    //returns 1 if player 1 (X) wins, 2 if player 2 (O) wins
+    // Returns 0 as the default
+    // Returns 1 if player 1 (X) wins, 2 if player 2 (O) wins
     private int GameState(int x, int y)
     {
         for (int i = 0; i < boardSize; i++)
@@ -151,6 +163,11 @@ public class GameManager : MonoBehaviour
             //UI action: invalid position
             UIManager.Instance.PositionInvalid();
         }
-        Debug.Log("GameState: " + GameState(x, y));
+
+        // Game end condition
+        if (GameState(x, y) != 0)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
     }
 }

@@ -17,8 +17,8 @@ public class OnBaseTileClick : MonoBehaviour
 		
 	}
 
-    //Use this function to get the integer part of our object name
-    //TODO: Convert array names to a 0-index
+    // Use this function to get the integer part of our object name
+    // TODO: Convert array names to a 0-index
     int getTile()
     {
         string suffix = string.Empty;
@@ -27,7 +27,7 @@ public class OnBaseTileClick : MonoBehaviour
         return int.Parse(suffix);
     }
 
-    //We detect the correct matrix position by using the name of the object
+    // We detect the correct matrix position by using the name of the object
     void OnMouseDown ()
     {
         int tile = new int();
