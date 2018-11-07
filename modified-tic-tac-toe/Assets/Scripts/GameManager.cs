@@ -29,6 +29,9 @@ public class GameManager : MonoBehaviour
     private static int boardSize = 5;
     private int[,] gameMatrix = new int[boardSize, boardSize];
     private int player = new int(); //the player that will place the next piece, 1 = X, 2 = O
+    private int outerMoveX;
+    private int outerMoveO;
+    private bool outerMoveTry;
 
     // Use this for initialization
     void Start()
@@ -37,6 +40,9 @@ public class GameManager : MonoBehaviour
             for (int j = 0; j < boardSize; j++)
                 gameMatrix[i, j] = 0;
         player = 1;
+        outerMoveX = 0;
+        outerMoveO = 0;
+        outerMoveTry = false;
     }
 
     // Update is called once per frame
@@ -50,6 +56,15 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(0);
         Object.Destroy(gameObject);
+    }
+
+    private void outerMove()
+    {
+        if (player == 1)
+            outerMoveX++;
+        else
+            outerMoveO++;
+        outerMoveTry = true;
     }
 
     public void SwitchPlayer()
@@ -121,6 +136,7 @@ public class GameManager : MonoBehaviour
 
     // Returns 0 as the default
     // Returns 1 if player 1 (X) wins, 2 if player 2 (O) wins
+    // TODO: Draw detection
     private int GameState(int x, int y)
     {
         for (int i = 0; i < boardSize; i++)
@@ -132,9 +148,38 @@ public class GameManager : MonoBehaviour
 
     private bool validPosition(int x, int y)
     {
+        if (outerMoveTry)
+        {
+            outerMoveTry = false;
+            if (player == 1 && outerMoveX > 1)
+            {
+                UIManager.Instance.OuterMoveInvalid();
+                return false;
+            }
+            if (player == 2 && outerMoveO > 1)
+            {
+                UIManager.Instance.OuterMoveInvalid();
+                return false;
+            }
+        }
         if (gameMatrix[x, y] != 0)
+        {
+            //UI action: invalid position
+            UIManager.Instance.PositionInvalid();
             return false;
+        }
         return true;
+    }
+
+    // uses the index of a tile to detect its position
+    private bool outerTile(int tile)
+    {
+        if (0 <= tile && tile < boardSize || boardSize * (boardSize - 1) <= tile &&
+            tile < boardSize * (boardSize - 1) + boardSize)
+            return true;
+        if (tile % boardSize == 0 || (tile + 1 % boardSize) == 0)
+            return true;
+        return false;
     }
 
     public void GameBoardUpdate(GameObject cross, GameObject nought, int tile)
@@ -143,6 +188,8 @@ public class GameManager : MonoBehaviour
         int y = new int();
         TileToXY(tile, ref x, ref y);
 
+        if (outerTile(tile))
+            outerMove();
         if (validPosition(x, y))
             if (player == 1)
             {
@@ -158,15 +205,10 @@ public class GameManager : MonoBehaviour
                 player = 1;
                 UIManager.Instance.PlayerMovingUI();
             }
-        else
-        {
-            //UI action: invalid position
-            UIManager.Instance.PositionInvalid();
-        }
-
         // Game end condition
         if (GameState(x, y) != 0)
         {
+            // Play audio here
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }

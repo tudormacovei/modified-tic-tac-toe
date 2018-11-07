@@ -19,7 +19,7 @@ public class OnBaseTileClick : MonoBehaviour
 
     // Use this function to get the integer part of our object name
     // TODO: Convert array names to a 0-index
-    int getTile()
+    private int getTile()
     {
         string suffix = string.Empty;
         int startIndex = gameObject.name.IndexOf('_');
@@ -28,7 +28,7 @@ public class OnBaseTileClick : MonoBehaviour
     }
 
     // We detect the correct matrix position by using the name of the object
-    void OnMouseDown ()
+    private void OnMouseDown ()
     {
         int tile = new int();
         tile = getTile();

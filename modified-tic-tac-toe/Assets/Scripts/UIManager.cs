@@ -74,4 +74,10 @@ public class UIManager : MonoBehaviour
         TextPosWarning.text = "INVALID MOVE!";
         Invoke("ClearPosWarning", 2);
     }
+
+    public void OuterMoveInvalid()
+    {
+        TextPosWarning.text = "ONLY 1 OUTSIDE MOVE ALLOWED";
+        Invoke("ClearPosWarning", 2);
+    }
 }
