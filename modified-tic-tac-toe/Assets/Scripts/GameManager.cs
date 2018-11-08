@@ -4,8 +4,6 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     // "Singleton" implementation
-    // The GameManager Class is a singleton, which is good pracice (apparently)
-    // I don't understand how this works quite yet, but I'll get there
     private static GameManager _instance;
 
     public static GameManager Instance
@@ -26,13 +24,14 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    public int GameState;
     private static int boardSize = 5;
     private int[,] gameMatrix = new int[boardSize, boardSize];
     private int player = new int(); //the player that will place the next piece, 1 = X, 2 = O
     private int outerMoveX;
     private int outerMoveO;
     private bool outerMoveTry;
-
+    
     // Use this for initialization
     void Start()
     {
@@ -45,13 +44,7 @@ public class GameManager : MonoBehaviour
         outerMoveTry = false;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    // To prevent duplicates when replaying scenes
+    // To prevent duplicates when reloading scenes
     public void MainMenu()
     {
         SceneManager.LoadScene(0);
@@ -137,7 +130,7 @@ public class GameManager : MonoBehaviour
     // Returns 0 as the default
     // Returns 1 if player 1 (X) wins, 2 if player 2 (O) wins
     // TODO: Draw detection
-    private int GameState(int x, int y)
+    private int gameWin(int x, int y)
     {
         for (int i = 0; i < boardSize; i++)
             for (int j = 0; j < boardSize; j++)
@@ -182,6 +175,41 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
+    private bool fullBoard()
+    {
+        for (int i = 1; i < boardSize - 1; i++)
+            for (int j = 1; j < boardSize - 1; j++)
+                // inner board is not full
+                if (gameMatrix[i, j] == 0)
+                    return false;
+        return true;
+    }
+
+    private bool allMovesInvalid()
+    {
+        if (!fullBoard())
+            return false;
+        // board is full
+        if (outerMoveX > 0 && player == 1)
+            return true;
+        if (outerMoveO > 0 && player == 2)
+            return true;
+        return false;
+    }
+
+    public int gameStateCheck(int x, int y)
+    {
+        int winner = new int();
+        winner = gameWin(x, y);
+        if (winner != 0)
+            return winner;
+        // the end move could be the last one but shouldn't call a draw
+        if (allMovesInvalid())
+            return -1;
+        // default
+        return 0;
+    }
+
     public void GameBoardUpdate(GameObject cross, GameObject nought, int tile)
     {
         int x = new int();
@@ -206,10 +234,14 @@ public class GameManager : MonoBehaviour
                 UIManager.Instance.PlayerMovingUI();
             }
         // Game end condition
-        if (GameState(x, y) != 0)
-        {
-            // Play audio here
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        }
+        GameState = gameStateCheck(x, y);
+        if (GameState != 0)
+            NextScene();
+    }
+
+    public void NextScene()
+    {
+        // Play audio here
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

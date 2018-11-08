@@ -5,18 +5,6 @@ public class OnBaseTileClick : MonoBehaviour
 {
     public GameObject Cross, Nought;
     
-	// Use this for initialization
-	void Start ()
-    {
-		
-	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-		
-	}
-
     // Use this function to get the integer part of our object name
     // TODO: Convert array names to a 0-index
     private int getTile()

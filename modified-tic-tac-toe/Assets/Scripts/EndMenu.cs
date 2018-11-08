@@ -9,7 +9,12 @@ public class EndMenu : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-        if (GameManager.Instance.PlayerMoving() == 2)
+        if (GameManager.Instance.GameState == -1)
+        {
+            WinMessage.text = "Draw! [Everyone's a loser]";
+            WinMessage.color = Color.grey;
+        }
+        else if (GameManager.Instance.GameState == 1)
         {
             WinMessage.text = "X Wins!";
             WinMessage.color = Color.red;
@@ -18,16 +23,9 @@ public class EndMenu : MonoBehaviour
         {
             WinMessage.text = "O Wins!";
             WinMessage.color = Color.green;
-        }   
-        Debug.Log("Here");
+        }
     }
 	
-	// Update is called once per frame
-	void Update ()
-    {
-        
-	}
-
     public void MainMenu()
     {
         GameManager.Instance.MainMenu();
