@@ -29,7 +29,6 @@ public class EndMenu : MonoBehaviour
     public void MainMenu()
     {
         GameManager.Instance.MainMenu();
-        UIManager.Instance.MainMenu();
         Debug.Log("Loading Menu");
     }
 

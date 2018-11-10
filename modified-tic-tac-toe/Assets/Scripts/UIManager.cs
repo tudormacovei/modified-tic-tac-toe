@@ -20,12 +20,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    // Not necessary in this implementation as we only have 1 level
-    void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
-
     public Text TextPlayer, TextPosWarning;
     public Color ColorPlayer_1;
     public Color ColorPlayer_2;
@@ -34,12 +28,6 @@ public class UIManager : MonoBehaviour
     void Start ()
     {
         PlayerMovingUI();
-    }
-
-    // To prevent duplicates
-    public void MainMenu()
-    {
-        Object.Destroy(gameObject);
     }
 
     public void PlayerMovingUI()

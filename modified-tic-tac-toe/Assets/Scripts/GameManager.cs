@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
         outerMoveX = 0;
         outerMoveO = 0;
         outerMoveTry = false;
+        AudioManager.Instance.PickMusic(0);
     }
 
     // To prevent duplicates when reloading scenes
@@ -241,7 +242,7 @@ public class GameManager : MonoBehaviour
 
     public void NextScene()
     {
-        // Play audio here
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        AudioManager.Instance.PickMusic(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

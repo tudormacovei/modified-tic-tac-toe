@@ -3,7 +3,6 @@
 #### Unity version: 2018.2.11f1
 
 ### TODO:
-#### 0. Add "Draw" GameState and end screen
 #### 1. New Sprites
 #### 2. Audio
 #### 2.1 Menu Theme
