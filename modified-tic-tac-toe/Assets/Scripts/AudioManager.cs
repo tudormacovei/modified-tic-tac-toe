@@ -39,26 +39,28 @@ public class AudioManager : MonoBehaviour
     // Picks music using the current context
     public void PickMusic(int levelIndex)
     {
-        stopMusic();
+        StopMusic();
         // we cold have a function in the GameManager for this
         if (levelIndex == 1)
         {
-            Debug.Log("GameMusic on");
             music.clip = GameMusic;
         }
         else
         {
-            Debug.Log("Menu on");
             music.clip = MenuMusic;
         }
-        Debug.Log(SceneManager.GetActiveScene().buildIndex);
         music.Play();
         music.loop = true;
     }
 
-    private void stopMusic()
+    public void StopMusic()
     {
         music.loop = false;
         music.Stop();
+    }
+
+    public void WinAudio()
+    {
+        music.PlayOneShot(WinEffect);
     }
 }

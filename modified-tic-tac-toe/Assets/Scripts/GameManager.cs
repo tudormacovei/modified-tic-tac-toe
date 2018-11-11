@@ -168,10 +168,11 @@ public class GameManager : MonoBehaviour
     // uses the index of a tile to detect its position
     private bool outerTile(int tile)
     {
-        if (0 <= tile && tile < boardSize || boardSize * (boardSize - 1) <= tile &&
-            tile < boardSize * (boardSize - 1) + boardSize)
+        Debug.Log(tile);
+        if ((0 <= tile && tile < boardSize) || (boardSize * (boardSize - 1) <= tile &&
+                                                tile < boardSize * (boardSize - 1) + boardSize))
             return true;
-        if (tile % boardSize == 0 || (tile + 1 % boardSize) == 0)
+        if (tile % boardSize == 0 || (tile - 1) % boardSize == 0)
             return true;
         return false;
     }
@@ -244,5 +245,10 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         AudioManager.Instance.PickMusic(SceneManager.GetActiveScene().buildIndex + 1);
+        if (GameState != -1 && GameState != 0)
+        {
+            AudioManager.Instance.StopMusic();
+            AudioManager.Instance.WinAudio();
+        }
     }
 }
