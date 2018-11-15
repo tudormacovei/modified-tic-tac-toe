@@ -5,10 +5,12 @@ using UnityEngine.UI;
 public class MainMenu : MonoBehaviour
 {
     public Text MoveSetText;
+    private GameBoard Board;
 
     // Use this for initialization
 	void Start ()
     {
+        Board = GameManager.Instance.Board;
         MoveSetText.text = "First Move: X";
         MoveSetText.color = Color.red;
     }
@@ -24,10 +26,15 @@ public class MainMenu : MonoBehaviour
         Application.Quit();
     }
 
+    public void Mute()
+    {
+        AudioManager.Instance.MuteToggle();
+    }
+
     public void SetMove()
     {
-        GameManager.Instance.SwitchPlayer();
-        if (GameManager.Instance.PlayerMoving() == 1)
+        Board.SwitchPlayer();
+        if (Board.Player == 1)
         {
             MoveSetText.text = "First Move: X";
             MoveSetText.color = Color.red;

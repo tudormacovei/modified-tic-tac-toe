@@ -23,16 +23,18 @@ public class UIManager : MonoBehaviour
     public Text TextPlayer, TextPosWarning;
     public Color ColorPlayer_1;
     public Color ColorPlayer_2;
+    private GameBoard Board;
 
     // Use this for initialization
     void Start ()
     {
+        Board = GameManager.Instance.Board;
         PlayerMovingUI();
     }
 
     public void PlayerMovingUI()
     {
-        if (GameManager.Instance.PlayerMoving() == 1)
+        if (Board.Player == 1)
         {
             TextPlayer.text = "X";
             TextPlayer.color = ColorPlayer_1;

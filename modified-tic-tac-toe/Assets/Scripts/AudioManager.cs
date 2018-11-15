@@ -31,16 +31,19 @@ public class AudioManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    void Start()
+    public void MuteToggle()
     {
-        music = Instance.GetComponent<AudioSource>();
+        if (music.volume != 0)
+            music.volume = 0;
+        else
+            music.volume = 100;
+        
     }
 
     // Picks music using the current context
     public void PickMusic(int levelIndex)
     {
         StopMusic();
-        // we cold have a function in the GameManager for this
         if (levelIndex == 1)
         {
             music.clip = GameMusic;
@@ -62,5 +65,10 @@ public class AudioManager : MonoBehaviour
     public void WinAudio()
     {
         music.PlayOneShot(WinEffect);
+    }
+
+    void Start()
+    {
+        music = Instance.GetComponent<AudioSource>();
     }
 }
